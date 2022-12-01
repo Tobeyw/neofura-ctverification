@@ -398,8 +398,8 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.4.0, Command: nccs --no-optimize")
 		}
 		if getCompileCommand(m) == "nccs" {
-			cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.4\\net6.0\\nccs.dll")
-			//cmd = exec.Command("dotnet", "/go/application/compiler2/3.4/net6.0/nccs.dll")
+			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.4\\net6.0\\nccs.dll")
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.4/net6.0/nccs.dll")
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.4.0, Command: nccs")
 		}
 	} else {
@@ -412,7 +412,8 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 	}
 
 	if getVersion(m) != "neow3j" {
-		cmd.Dir = "D:\\Neo\\GoProject\\neo3fura-ctverification\\" + pathFile + "\\"
+		//	cmd.Dir = "D:\\Neo\\GoProject\\neo3fura-ctverification\\" + pathFile + "\\"
+		cmd.Dir = pathFile + "/"
 	} else {
 		cmd.Dir = "./"
 	}
@@ -470,7 +471,7 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 
 		pa := pathFile + "/" + "bin/sc/" + file + ".nef"
 		fmt.Println(pa)
-		_, err = os.Lstat("./" + pathFile + "/" + "bin/sc/" + file + ".nef")
+		_, err = os.Lstat(pathFile + "/" + "bin/sc/" + file + ".nef")
 
 		fmt.Println("there")
 	}
