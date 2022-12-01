@@ -53,14 +53,6 @@ type Config struct {
 		Database string `yaml:"database"`
 		DBName   string `yaml:"dbname"`
 	} `yaml:"database_test"`
-	Database_testmagnet struct {
-		Host     string `yaml:"host"`
-		Port     string `yaml:"port"`
-		User     string `yaml:"user"`
-		Pass     string `yaml:"pass"`
-		Database string `yaml:"database"`
-		DBName   string `yaml:"dbname"`
-	} `yaml:"database_testmagnet"`
 }
 
 //定义http应答返回格式
@@ -643,8 +635,8 @@ func intializeMongoOnlineClient(cfg Config, ctx context.Context) (*mongo.Client,
 		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_test.User + ":" + cfg.Database_test.Pass + "@" + cfg.Database_test.Host + ":" + cfg.Database_test.Port + "/" + cfg.Database_test.Database)
 		dbOnline = cfg.Database_test.Database
 	case "testmagnet":
-		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_testmagnet.User + ":" + cfg.Database_testmagnet.Pass + "@" + cfg.Database_testmagnet.Host + ":" + cfg.Database_testmagnet.Port + "/" + cfg.Database_testmagnet.Database)
-		dbOnline = cfg.Database_testmagnet.Database
+		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_test.User + ":" + cfg.Database_test.Pass + "@" + cfg.Database_test.Host + ":" + cfg.Database_test.Port + "/" + cfg.Database_test.Database)
+		dbOnline = cfg.Database_test.Database
 	}
 	fmt.Println(clientOptions)
 	clientOptions.SetMaxPoolSize(50)
@@ -703,7 +695,11 @@ func getJavaPackage(m map[string]string) string {
 
 //监听127.0.0.1:1926端口
 func main() {
-
+	cfg, err1 := OpenConfigFile()
+	if err1 != nil {
+		log.Fatal(" open file error")
+	}
+	fmt.Println(cfg)
 	fmt.Println("Server start")
 	fmt.Println("YOUR ENV IS " + os.ExpandEnv("${RUNTIME}"))
 	//verifyNef("helloword")
