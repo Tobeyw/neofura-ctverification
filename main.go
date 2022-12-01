@@ -646,7 +646,7 @@ func intializeMongoOnlineClient(cfg Config, ctx context.Context) (*mongo.Client,
 		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_testmagnet.User + ":" + cfg.Database_testmagnet.Pass + "@" + cfg.Database_testmagnet.Host + ":" + cfg.Database_testmagnet.Port + "/" + cfg.Database_testmagnet.Database)
 		dbOnline = cfg.Database_testmagnet.Database
 	}
-
+	fmt.Println(clientOptions)
 	clientOptions.SetMaxPoolSize(50)
 	co, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
