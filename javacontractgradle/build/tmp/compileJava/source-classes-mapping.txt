@@ -1,0 +1,2 @@
+FungibleToken.java
+ io.neow3j.examples.contractdevelopment.contracts.FungibleToken
