@@ -37,22 +37,14 @@ const RPCNODETESTMAGNET = "https://testmagnet.ngd.network"
 
 //定义主网和测试往数据库结构
 type Config struct {
-	Database_main struct {
+	Database struct {
 		Host     string `yaml:"host"`
 		Port     string `yaml:"port"`
 		User     string `yaml:"user"`
 		Pass     string `yaml:"pass"`
 		Database string `yaml:"database"`
 		DBName   string `yaml:"dbname"`
-	} `yaml:"database_main"`
-	Database_test struct {
-		Host     string `yaml:"host"`
-		Port     string `yaml:"port"`
-		User     string `yaml:"user"`
-		Pass     string `yaml:"pass"`
-		Database string `yaml:"database"`
-		DBName   string `yaml:"dbname"`
-	} `yaml:"database_test"`
+	} `yaml:"database"`
 }
 
 //定义http应答返回格式
@@ -164,14 +156,14 @@ func multipleFile(w http.ResponseWriter, r *http.Request) {
 		//查询当前合约是否已经存在于VerifiedContract表中，参数为合约hash，合约更新次数
 		filter := bson.M{"hash": getContract(m1), "updatecounter": getUpdateCounter(m2)}
 		var result *mongo.SingleResult
-		result = co.Database(dbonline).Collection("VerifyContractModel").FindOne(ctx, filter)
+		result = co.Database(dbonline).Collection(getDocumentByEnv("VerifyContractModel")).FindOne(ctx, filter)
 
 		//如果合约不存在于VerifiedContract表中，验证成功
 		if result.Err() != nil {
 			//在VerifyContract表中插入该合约信息
 			verified := insertVerifiedContract{getContract(m1), getId(m2), getUpdateCounter(m2)}
 			var insertOne *mongo.InsertOneResult
-			insertOne, err = co.Database(dbonline).Collection("VerifyContractModel").InsertOne(ctx, verified)
+			insertOne, err = co.Database(dbonline).Collection(getDocumentByEnv("VerifyContractModel")).InsertOne(ctx, verified)
 			fmt.Println("Connect to mainnet database")
 
 			if err != nil {
@@ -224,9 +216,9 @@ func multipleFile(w http.ResponseWriter, r *http.Request) {
 					var insertOneSourceCode *mongo.InsertOneResult
 					sourceCode := insertContractSourceCode{getContract(m1), getUpdateCounter(m2), fi.Name(), string(buffer)}
 					if rt == "mainnet" {
-						insertOneSourceCode, err = co.Database(dbonline).Collection("ContractSourceCode").InsertOne(ctx, sourceCode)
+						insertOneSourceCode, err = co.Database(dbonline).Collection(getDocumentByEnv("ContractSourceCode")).InsertOne(ctx, sourceCode)
 					} else {
-						insertOneSourceCode, err = co.Database(dbonline).Collection("ContractSourceCode").InsertOne(ctx, sourceCode)
+						insertOneSourceCode, err = co.Database(dbonline).Collection(getDocumentByEnv("ContractSourceCode")).InsertOne(ctx, sourceCode)
 					}
 
 					if err != nil {
@@ -618,26 +610,27 @@ func OpenConfigFile() (Config, error) {
 	}
 	return cfg, err
 }
-
-//链接主网和测试网数据库
-func intializeMongoOnlineClient(cfg Config, ctx context.Context) (*mongo.Client, string) {
+func getDocumentByEnv(docname string) string {
 	rt := os.ExpandEnv("${RUNTIME}")
-	var clientOptions *options.ClientOptions
-	var dbOnline string
 	if rt != "mainnet" && rt != "testnet" && rt != "testmagnet" {
 		rt = "mainnet"
 	}
 	switch rt {
 	case "mainnet":
-		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_main.User + ":" + cfg.Database_main.Pass + "@" + cfg.Database_main.Host + ":" + cfg.Database_main.Port + "/" + cfg.Database_main.Database)
-		dbOnline = cfg.Database_main.Database
+		docname = "main_" + docname
 	case "testnet":
-		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_test.User + ":" + cfg.Database_test.Pass + "@" + cfg.Database_test.Host + ":" + cfg.Database_test.Port + "/" + cfg.Database_test.Database)
-		dbOnline = cfg.Database_test.Database
+		docname = "test_" + docname
 	case "testmagnet":
-		clientOptions = options.Client().ApplyURI("mongodb://" + cfg.Database_test.User + ":" + cfg.Database_test.Pass + "@" + cfg.Database_test.Host + ":" + cfg.Database_test.Port + "/" + cfg.Database_test.Database)
-		dbOnline = cfg.Database_test.Database
+		docname = "magnet_" + docname
 	}
+	return docname
+}
+
+//链接主网和测试网数据库
+func intializeMongoOnlineClient(cfg Config, ctx context.Context) (*mongo.Client, string) {
+	clientOptions := options.Client().ApplyURI("mongodb://" + cfg.Database.User + ":" + cfg.Database.Pass + "@" + cfg.Database.Host + ":" + cfg.Database.Port + "/" + cfg.Database.Database)
+	dbOnline := cfg.Database.Database
+
 	fmt.Println(clientOptions)
 	clientOptions.SetMaxPoolSize(50)
 	co, err := mongo.Connect(ctx, clientOptions)
