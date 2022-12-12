@@ -215,11 +215,7 @@ func multipleFile(w http.ResponseWriter, r *http.Request) {
 
 					var insertOneSourceCode *mongo.InsertOneResult
 					sourceCode := insertContractSourceCode{getContract(m1), getUpdateCounter(m2), fi.Name(), string(buffer)}
-					if rt == "mainnet" {
-						insertOneSourceCode, err = co.Database(dbonline).Collection(getDocumentByEnv("ContractSourceCode")).InsertOne(ctx, sourceCode)
-					} else {
-						insertOneSourceCode, err = co.Database(dbonline).Collection(getDocumentByEnv("ContractSourceCode")).InsertOne(ctx, sourceCode)
-					}
+					insertOneSourceCode, err = co.Database(dbonline).Collection(getDocumentByEnv("ContractSourceCode")).InsertOne(ctx, sourceCode)
 
 					if err != nil {
 						log.Fatal(err)
@@ -385,6 +381,16 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.4\\net6.0\\nccs.dll")
 			cmd = exec.Command("dotnet", "/go/application/compiler2/3.4/net6.0/nccs.dll")
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.4.0, Command: nccs")
+		}
+	} else if getVersion(m) == "Neo.Compiler.CSharp 3.5.0" {
+		if getCompileCommand(m) == "nccs --no-optimize" {
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.5/net6.0/nccs.dll", "--no-optimize")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.5.0, Command: nccs --no-optimize")
+		}
+		if getCompileCommand(m) == "nccs" {
+			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.5\\net6.0\\nccs.dll")
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.5/net6.0/nccs.dll")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.5.0, Command: nccs")
 		}
 	} else {
 		fmt.Println("===============Compiler version doesn't exist==============")
