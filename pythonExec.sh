@@ -1,6 +1,13 @@
 #!/bin/bash
 echo you env is $1
 
+if [ $1 == "boa114" ]
+then
+  source /go/application/venv114/bin/activate
+  neo3-boa *.py
+  deactivate
+fi
+
 if [ $1 == "boa113" ]
 then
   source /go/application/venv113/bin/activate
