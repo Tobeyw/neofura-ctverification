@@ -429,7 +429,7 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6/net7.0/nccs.dll")
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.0, Command: nccs")
 		}
-	} else if getVersion(m) == "Neo.Compiler.CSharp 3.6.2`" {
+	} else if getVersion(m) == "Neo.Compiler.CSharp 3.6.2" {
 		if getCompileCommand(m) == "nccs --no-optimize" {
 			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6.2/net7.0/nccs.dll", "--no-optimize")
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.2, Command: nccs --no-optimize")
