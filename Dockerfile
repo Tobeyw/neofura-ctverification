@@ -36,12 +36,11 @@ RUN  apt-get install -y  python3
 
 RUN apt-get install -y python3-venv
 
-RUN python3 -m pip install --upgrade pip
 ##neo3-boa 1.1.0
-RUN python3 -m venv venv1010
-RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
-RUN /bin/sh -c 'source venv1010/bin/activate && pip install neo3-boa==1.1.0'
+#RUN python3 -m venv venv1010
+#RUN echo "dash dash/sh boolean false" | debconf-set-selections
+#RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+#RUN /bin/sh -c 'source venv1010/bin/activate && pip install neo3-boa==1.1.0'
 
 ##neo3-boa 1.0.1
 RUN python3 -m venv venv1001
