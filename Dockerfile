@@ -28,9 +28,71 @@ RUN  apt-get install -y dotnet-sdk-6.0
 
 RUN  apt-get install -y aspnetcore-runtime-6.0
 
+RUN  apt-get install -y dotnet-sdk-7.0.404
+
 RUN  apt-get install -y  python3
 
 RUN apt-get install -y python3-venv
+
+##neo3-boa 1.1.0
+RUN python3 -m venv venv1010
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv1010/bin/activate && pip install neo3-boa==1.1.0'
+
+##neo3-boa 1.0.1
+RUN python3 -m venv venv1001
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv1001/bin/activate && pip install neo3-boa==1.0.1'
+
+##neo3-boa 1.0.0
+RUN python3 -m venv venv1000
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv1000/bin/activate && pip install neo3-boa==1.0.0'
+
+##neo3-boa 0.14.0
+RUN python3 -m venv venv140
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv140/bin/activate && pip install neo3-boa==0.14.0'
+
+##neo3-boa 0.13.1
+RUN python3 -m venv venv131
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv131/bin/activate && pip install neo3-boa==0.13.1'
+
+##neo3-boa 0.13.0
+RUN python3 -m venv venv130
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv130/bin/activate && pip install neo3-boa==0.13.0'
+
+##neo3-boa 0.12.3
+RUN python3 -m venv venv123
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv123/bin/activate && pip install neo3-boa==0.12.3'
+
+##neo3-boa 0.12.2
+RUN python3 -m venv venv122
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv122/bin/activate && pip install neo3-boa==0.12.2'
+
+##neo3-boa 0.12.1
+RUN python3 -m venv venv121
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv121/bin/activate && pip install neo3-boa==0.12.1'
+
+##neo3-boa 0.12.0
+RUN python3 -m venv venv120
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN /bin/sh -c 'source venv120/bin/activate && pip install neo3-boa==0.12.0'
 
 ##neo3-boa 0.11.4
 RUN python3 -m venv venv114
@@ -143,6 +205,12 @@ RUN  chmod 777 compiler2/3.1/net6.0/nccs.exe
 RUN  chmod 777 compiler2/3.3/net6.0/nccs.exe
 
 RUN  chmod 777 compiler2/3.4/net6.0/nccs.exe
+
+RUN  chmod 777 compiler2/3.5/net6.0/nccs.exe
+
+RUN  chmod 777 compiler2/3.6/net7.0/nccs.exe
+
+RUN  chmod 777 compiler2/3.6.2/net7.0/nccs.exe
 
 RUN tar -zxvf contract.tar.gz
 

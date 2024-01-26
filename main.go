@@ -270,7 +270,34 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 	//cmd := exec.Command("ls")
 	//根据用户上传参数选择对应的编译器
 	cmd := exec.Command("echo")
-	if getVersion(m) == "neo3-boa 0.11.4" {
+	if getVersion(m) == "neo3-boa 1.1.0" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa114")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 1.1.0")
+	} else if getVersion(m) == "neo3-boa 1.0.1" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa113")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 1.0.1")
+	} else if getVersion(m) == "neo3-boa 0.14.0" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa112")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.14.0")
+	} else if getVersion(m) == "neo3-boa 0.13.1" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa111")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.13.1")
+	} else if getVersion(m) == "neo3-boa 0.13.0" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa110")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.13.0")
+	} else if getVersion(m) == "neo3-boa 0.12.3" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa101")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.12.3")
+	} else if getVersion(m) == "neo3-boa 0.12.2" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa100")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.12.2")
+	} else if getVersion(m) == "neo3-boa 0.12.1" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa090")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.12.1")
+	} else if getVersion(m) == "neo3-boa 0.12.0" {
+		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa083")
+		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.12.0")
+	} else if getVersion(m) == "neo3-boa 0.11.4" {
 		cmd = exec.Command("/bin/sh", "/go/application/pythonExec.sh", "boa114")
 		fmt.Println("Compiler: neo3-boa, Command: neo3-boa 0.11.4")
 	} else if getVersion(m) == "neo3-boa 0.11.3" {
@@ -391,6 +418,26 @@ func execCommand(pathFile string, folderName string, w http.ResponseWriter, m ma
 			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.5\\net6.0\\nccs.dll")
 			cmd = exec.Command("dotnet", "/go/application/compiler2/3.5/net6.0/nccs.dll")
 			fmt.Println("Compiler: Neo.Compiler.CSharp 3.5.0, Command: nccs")
+		}
+	} else if getVersion(m) == "Neo.Compiler.CSharp 3.6.0" {
+		if getCompileCommand(m) == "nccs --no-optimize" {
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6/net7.0/nccs.dll", "--no-optimize")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.0, Command: nccs --no-optimize")
+		}
+		if getCompileCommand(m) == "nccs" {
+			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.5\\net6.0\\nccs.dll")
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6/net7.0/nccs.dll")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.0, Command: nccs")
+		}
+	} else if getVersion(m) == "Neo.Compiler.CSharp 3.6.2`" {
+		if getCompileCommand(m) == "nccs --no-optimize" {
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6.2/net7.0/nccs.dll", "--no-optimize")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.2, Command: nccs --no-optimize")
+		}
+		if getCompileCommand(m) == "nccs" {
+			//	cmd = exec.Command("dotnet", "D:\\Neo\\GoProject\\neo3fura-ctverification\\compiler2\\3.5\\net6.0\\nccs.dll")
+			cmd = exec.Command("dotnet", "/go/application/compiler2/3.6.2/net7.0/nccs.dll")
+			fmt.Println("Compiler: Neo.Compiler.CSharp 3.6.2, Command: nccs")
 		}
 	} else {
 		fmt.Println("===============Compiler version doesn't exist==============")
@@ -714,6 +761,7 @@ func main() {
 	mux.Handle("/", promhttp.Handler())
 	handler := cors.Default().Handler(mux)
 	err := http.ListenAndServe("0.0.0.0:1927", handler)
+	fmt.Println(err)
 	if err != nil {
 		fmt.Println("listen and server error")
 	}
