@@ -20,6 +20,9 @@ RUN   apt-get update  && \
       apt-get install -y apt-transport-https  && \
       apt-get update
 
+RUN  apt-get install -y dotnet-sdk-6.0
+RUN  apt-get install -y aspnetcore-runtime-6.0
+
 RUN  apt-get install -y dotnet-sdk-7.0
 RUN  apt-get install -y aspnetcore-runtime-7.0
 
